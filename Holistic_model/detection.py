@@ -37,7 +37,7 @@ with mp_holistic.Holistic(min_detection_confidence = 0.5, min_tracking_confidenc
 
 		#make detection
 		results = holistic.process(image)
-		#print(results._____)
+		print(results)
 
 		#face, pose, left hand, right hand
 
@@ -50,9 +50,9 @@ with mp_holistic.Holistic(min_detection_confidence = 0.5, min_tracking_confidenc
 			#CONNECTIONS la de noi cac vertex lai
 		#draw face landmarks
 		#ko dung thi go # de off
-		mp_drawing.draw_landmarks(image, results.face_landmarks, mp_holistic.FACEMESH_CONTOURS,		#or TESSELATION
-								  mp_drawing.DrawingSpec(color = (130, 155, 0), thickness = -3, circle_radius = 1),
-								  mp_drawing.DrawingSpec(color = (130, 155, 0), thickness = 2, circle_radius = 4))
+		#mp_drawing.draw_landmarks(image, results.face_landmarks, mp_holistic.FACEMESH_CONTOURS,		#or TESSELATION
+		#						  mp_drawing.DrawingSpec(color = (130, 155, 0), thickness = -3, circle_radius = 1),
+		#						  mp_drawing.DrawingSpec(color = (130, 155, 0), thickness = 2, circle_radius = 4))
 
 		#pose
 		mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS,

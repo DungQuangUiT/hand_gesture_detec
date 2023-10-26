@@ -1,5 +1,9 @@
 import cv2
 import mediapipe as mp						#mp - thu vien mediapipe
+import time
+
+pTime = 0
+cTime = 0
 
 mp_drawing = mp.solutions.drawing_utils		#draw line
 mp_holistic = mp.solutions.holistic			#import holistic model (face, hand, pose)
@@ -47,6 +51,12 @@ with mp_holistic.Holistic(min_detection_confidence = 0.5, min_tracking_confidenc
 								  mp_drawing.DrawingSpec(color = (200, 40, 72), thickness = -1, circle_radius = 3),
 								  mp_drawing.DrawingSpec(color = (200, 40, 72), thickness = 2, circle_radius = 4))
 
+
+		cTime = time.time()
+		fps = 1/(cTime - pTime)
+		pTime = cTime
+		cv2.rectangle(image, (0, 435), (50, 490), (73, 38, 187), -1)
+		cv2.putText(image, str(int(fps)), (4, 468), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 240, 230), 2, cv2.LINE_AA)
 
 		cv2.imshow('Raw Webcam Feed', image)
 
