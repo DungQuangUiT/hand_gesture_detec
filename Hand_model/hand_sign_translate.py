@@ -14,12 +14,16 @@ with open('body_language.pkl', 'rb') as f:
 
 pTime = 0
 cTime = 0
+tTime = 0
 
 mp_drawing = mp.solutions.drawing_utils				#draw line
 mp_hands = mp.solutions.hands						#import hand model
 
 
 cap = cv2.VideoCapture(0)
+image2 = cv2.imread("blank_bg.jpg")
+
+tran_text = []
 
 with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
 
@@ -96,6 +100,15 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 		except:
 			pass
 
+		cTime = time.time()
+		if (cTime - tTime >= 2):
+			tran_text.append(body_language_class)
+			tran_text_final = list(np.array(tran_text).flatten())
+			tran_text_final = str(tran_text_final).replace("[", "").replace("]", "").replace("'", "").replace(",", "")
+			cv2.putText(image2, str(tran_text_final),
+						  (50, 32), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (45, 30, 30), 1, cv2.LINE_AA)
+			tTime = cTime
+
 
 		cTime = time.time()
 		fps = 1/(cTime - pTime)
@@ -103,7 +116,10 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 		cv2.rectangle(image, (0, 435), (50, 490), (73, 38, 187), -1)
 		cv2.putText(image, str(int(fps)), (4, 468), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 240, 230), 2, cv2.LINE_AA)
 
+
+		cv2.imshow("Image", image2)
 		cv2.imshow('Raw Webcam Feed', image)
+
 
 		if cv2.waitKey(10) & 0xFF == ord('q'):
 			break
