@@ -100,13 +100,14 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 		except:
 			pass
 
+		#hiển thị text translated from hand sign
 		cTime = time.time()
 		if (cTime - tTime >= 2):
 			tran_text.append(body_language_class)
 			tran_text_final = list(np.array(tran_text).flatten())
-			tran_text_final = str(tran_text_final).replace("[", "").replace("]", "").replace("'", "").replace(",", "")
+			tran_text_final = str(tran_text_final).replace("[", "").replace("]", "").replace("'", "").replace(",", "").replace(" ", "")
 			cv2.putText(image2, str(tran_text_final),
-						  (50, 32), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (45, 30, 30), 1, cv2.LINE_AA)
+						  (20, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (45, 30, 30), 1, cv2.LINE_AA)
 			tTime = cTime
 
 
