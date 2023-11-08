@@ -12,7 +12,7 @@ cTime = 0
 mp_drawing = mp.solutions.drawing_utils				#draw line
 mp_hands = mp.solutions.hands						#import hand model
 
-class_name = "E"
+class_name = "M"
 
 cap = cv2.VideoCapture(0)
 

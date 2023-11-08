@@ -14,7 +14,7 @@ with open('body_language.pkl', 'rb') as f:
 
 pTime = 0
 cTime = 0
-tTime = 0
+tTime = 8
 
 mp_drawing = mp.solutions.drawing_utils				#draw line
 mp_hands = mp.solutions.hands						#import hand model
@@ -102,7 +102,7 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 
 		#hiển thị text translated from hand sign
 		cTime = time.time()
-		if (cTime - tTime >= 2):
+		if (cTime - tTime >= 4):
 			tran_text.append(body_language_class)
 			tran_text_final = list(np.array(tran_text).flatten())
 			tran_text_final = str(tran_text_final).replace("[", "").replace("]", "").replace("'", "").replace(",", "").replace(" ", "")
