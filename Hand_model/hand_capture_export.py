@@ -12,7 +12,7 @@ cTime = 0
 mp_drawing = mp.solutions.drawing_utils				#draw line
 mp_hands = mp.solutions.hands						#import hand model
 
-class_name = "M"
+class_name = "Y"
 
 cap = cv2.VideoCapture(0)
 
@@ -71,14 +71,16 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 			#append class name
 			landmarks_row.insert(0, class_name)
 
-			#export to CSV
-			with open('coords.csv', mode = 'a', newline = '') as f:
-				csv_writer = csv.writer(f, delimiter = ',', quotechar = '"', quoting = csv.QUOTE_MINIMAL)
-				csv_writer.writerow(landmarks_row)
-
 		except:
 			pass
 
+		if cv2.waitKey(1) & 0xFF == ord('e'):
+			#export to CSV
+			with open('coords_test.csv', mode = 'a', newline = '') as f:
+				csv_writer = csv.writer(f, delimiter = ',', quotechar = '"', quoting = csv.QUOTE_MINIMAL)
+				csv_writer.writerow(landmarks_row)
+
+			cv2.imwrite(os.path.join('Y', '{}.jpg'.format(uuid.uuid1())), image)
 
 		cTime = time.time()
 		fps = 1/(cTime - pTime)

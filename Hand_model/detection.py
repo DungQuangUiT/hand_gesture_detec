@@ -9,7 +9,7 @@ import pickle
 import time
 
 #load model
-with open('body_language.pkl', 'rb') as f:
+with open('body_language_test.pkl', 'rb') as f:
 	model = pickle.load(f)
 
 pTime = 0
