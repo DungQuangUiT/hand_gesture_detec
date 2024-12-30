@@ -4,38 +4,27 @@ import numpy as np
 import uuid
 import os
 import csv
-import time
 
-pTime = 0
-cTime = 0
 
 mp_drawing = mp.solutions.drawing_utils				#draw line
 mp_hands = mp.solutions.hands						#import hand model
 
-class_name = "Y"
+class_name = "c"
 
-cap = cv2.VideoCapture(0)
+image_folder_path = 'c'  # Thay đổi đường dẫn đến thư mục chứa hình ảnh của bạn
 
-with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
+image_files = os.listdir(image_folder_path)
+image_files = [os.path.join(image_folder_path, file) for file in image_files if file.endswith(('png', 'jpg', 'jpeg'))]
 
-	while cap.isOpened():
-		ret, frame = cap.read()
+with mp_hands.Hands(min_detection_confidence = 0.5, min_tracking_confidence = 0.5) as hands:
 
-		#recolor feed
+	for image_path in image_files:
+		frame = cv2.imread(image_path)
+
 		image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-		#set flag
 		image.flags.writeable = False
-
-		#Dectection
 		results = hands.process(image)
-		#print(results)
-
-
-		#set flag to true
 		image.flags.writeable = True
-
-		#recolor image back to BGR for rendering (opencv love BGR)
 		image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
 		# Rendering results
@@ -61,8 +50,7 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 			        x = landmark.x
 			        y = landmark.y
 			        z = landmark.z
-			        visibility = landmark.visibility
-			        landmarks_data.append([x, y, z, visibility])
+			        landmarks_data.append([x, y, z])
 
 			# Chuyển danh sách các landmarks thành một danh sách phẳng
 			landmarks_row = list(np.array(landmarks_data).flatten())
@@ -70,28 +58,20 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 
 			#append class name
 			landmarks_row.insert(0, class_name)
-
+			with open('model_13-12.csv', mode = 'a', newline = '') as f:
+				csv_writer = csv.writer(f, delimiter = ',', quotechar = '"', quoting = csv.QUOTE_MINIMAL)
+				csv_writer.writerow(landmarks_row)
+			
 		except:
 			pass
 
-		if cv2.waitKey(1) & 0xFF == ord('e'):
-			#export to CSV
-			with open('coords_test.csv', mode = 'a', newline = '') as f:
-				csv_writer = csv.writer(f, delimiter = ',', quotechar = '"', quoting = csv.QUOTE_MINIMAL)
-				csv_writer.writerow(landmarks_row)
 
-			cv2.imwrite(os.path.join('Y', '{}.jpg'.format(uuid.uuid1())), image)
 
-		cTime = time.time()
-		fps = 1/(cTime - pTime)
-		pTime = cTime
-		cv2.rectangle(image, (0, 435), (50, 490), (73, 38, 187), -1)
-		cv2.putText(image, str(int(fps)), (4, 468), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 240, 230), 2, cv2.LINE_AA)
+
 
 		cv2.imshow('Raw Webcam Feed', image)
 
 		if cv2.waitKey(10) & 0xFF == ord('q'):
 			break
 
-cap.release()
 cv2.destroyAllWindows()

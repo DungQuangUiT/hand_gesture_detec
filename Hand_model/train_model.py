@@ -18,7 +18,7 @@ mp_holistic = mp.solutions.holistic			#import holistic model (face, hand, pose)
 
 
 #load pose & face data from csv
-df = pd.read_csv('coords_test.csv')
+df = pd.read_csv('model_13-12.csv')
 
 X = df.drop('class', axis = 1)	#features
 y = df['class']					#target value
@@ -44,5 +44,5 @@ for algo, model in fit_models.items():
 	yhat = model.predict(X_test)
 	print(algo, accuracy_score(y_test, yhat))
 
-with open('body_language_test.pkl', 'wb') as f:
+with open('model_13-12.pkl', 'wb') as f:
 	pickle.dump(fit_models['rf'], f)

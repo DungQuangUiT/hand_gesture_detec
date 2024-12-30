@@ -9,7 +9,7 @@ import pickle
 import time
 
 #load model
-with open('body_language_test.pkl', 'rb') as f:
+with open('model_13-12.pkl', 'rb') as f:
 	model = pickle.load(f)
 
 pTime = 0
@@ -32,6 +32,7 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 		#set flag
 		image.flags.writeable = False
 
+
 		#Dectection
 		results = hands.process(image)
 		#print(results)
@@ -42,6 +43,14 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 
 		#recolor image back to BGR for rendering (opencv love BGR)
 		image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
+		x = 0
+		y = 0
+		w = 350
+		h = 350
+		# Crop ảnh
+		cropped_image = image[y:y+h, x:x+w]
+		cv2.imshow('Dectec area', cropped_image)
 
 		# Rendering results
 		if results.multi_hand_landmarks:
@@ -66,8 +75,7 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
 			        x = landmark.x
 			        y = landmark.y
 			        z = landmark.z
-			        visibility = landmark.visibility
-			        landmarks_data.append([x, y, z, visibility])
+			        landmarks_data.append([x, y, z])
 
 			# Chuyển danh sách các landmarks thành một danh sách phẳng
 			landmarks_row = list(np.array(landmarks_data).flatten())
