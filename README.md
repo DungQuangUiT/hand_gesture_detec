@@ -14,7 +14,7 @@ Overal, the final model is able to detect 23 letter, however, the matching proba
 </p>
 
 <p align="center">
-  <img src="figures/demo.png" width=58%>
+  <img src="figures/demo.png">
   model_13-12 testing in hand gesture translating application.
 </p>
 
